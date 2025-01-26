@@ -138,7 +138,7 @@ app/static
 
 # Additions
 
-1. **CI/CD**: A minimal GitHub Actions pipeline is included to lint the code and run the tests, ensuring code quality and reliability. The pipeline is located in `.github/workflows/ci_pipeline.yml`.
+1. **CI/CD**: A minimal GitHub Actions pipeline is included to lint the code and run the tests, ensuring code quality and reliability. The pipeline is located in `.github/workflows/ci.yml`.
 
 2. **Scalability**: Detailed documentation discussing how the image processing pipeline can be extended for higher throughput and cloud deployment is provided. [Read more here](docs/scalability_design.md).
 
