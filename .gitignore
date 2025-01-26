@@ -175,3 +175,4 @@ static/demo/*.mov
 tests/.DS_Store
 static/processed/.DS_Store
 static/.DS_Store
+.DS_Store
