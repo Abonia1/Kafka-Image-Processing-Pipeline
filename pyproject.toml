@@ -1,0 +1,42 @@
+[project]
+name = "image-processing-pipeline"
+version = "0.1.0"
+description = "Image Processing Pipeline is a microservices-based application designed to efficiently process images."
+authors = [
+    {name = "Abonia Sojasingarayar",email = "aboniaa@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi (>=0.115.7,<0.116.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "kafka-python (>=2.0.2,<3.0.0)",
+    "asyncio (>=3.4.3,<4.0.0)",
+    "fal-client (>=0.5.8,<0.6.0)",
+    "aiohttp (>=3.11.11,<4.0.0)",
+    "requests (>=2.32.3,<3.0.0)",
+    "pytest-asyncio (>=0.25.2,<0.26.0)",
+    "pytest (>=8.3.4,<9.0.0)",
+    "black (>=24.10.0,<25.0.0)"
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py3"]
+extend-exclude = "/(venv|env|eggs|dist)/"
+
+[tool.flake8]
+max-line-length = 88
+ignore = [
+     "E1:0", "E123","E302","E41"
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov=image-processing-pipeline --cov-report=term-missing"
+
+[tool.coverage]
+start = true
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
