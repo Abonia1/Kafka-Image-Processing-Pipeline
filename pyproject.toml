@@ -20,11 +20,6 @@ dependencies = [
     "black (>=24.10.0,<25.0.0)"
 ]
 
-[tool.black]
-line-length = 100
-target-version = ["py3"]
-extend-exclude = "/(venv|env|eggs|dist)/"
-
 [tool.flake8]
 max-line-length = 88
 ignore = [
