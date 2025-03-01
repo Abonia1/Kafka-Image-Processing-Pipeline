@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    platform: linux/arm64
+    container_name: zookeeper
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+    ports:
+      - "2181:2181"
+    networks:
+      - kafka_network  
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest #wurstmeister/kafka
+    platform: linux/arm64
+    container_name: kafka
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=INSIDE_KAFKA://kafka:9092,OUTSIDE_KAFKA://kafka:9093
+      - KAFKA_ADVERTISED_LISTENERS=INSIDE_KAFKA://kafka:9092,OUTSIDE_KAFKA://localhost:9093
+      - KAFKA_LISTENERS=INSIDE_KAFKA://0.0.0.0:9092,OUTSIDE_KAFKA://0.0.0.0:9093
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INSIDE_KAFKA:PLAINTEXT,OUTSIDE_KAFKA:PLAINTEXT
+      - KAFKA_LISTENER_SECURITY_PROTOCOL=PLAINTEXT 
+      - KAFKA_LISTENER_NAME_INSIDE_KAFKA_SECURITY_PROTOCOL=PLAINTEXT  
+      - KAFKA_LISTENER_NAME_OUTSIDE_KAFKA_SECURITY_PROTOCOL=PLAINTEXT 
+      - KAFKA_INTER_BROKER_LISTENER_NAME=INSIDE_KAFKA
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    volumes:
+      - ./data/kafka:/var/lib/kafka/data 
+    depends_on:
+      - zookeeper 
+    networks:
+      - kafka_network
+    healthcheck:
+      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:9093"]
+      interval: 60s
+      retries: 5
+
+  image_processing_service:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile  
+    ports:
+      - "5000:5000"
+    depends_on:
+      kafka:
+        condition: service_healthy 
+    environment:
+      - KAFKA_BROKER=kafka:9093  # Internal broker address
+    networks:
+      - kafka_network
+
+networks:
+  kafka_network:
+    driver: bridge 

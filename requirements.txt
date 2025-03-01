@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+kafka-python
+asyncio
+fal_client
+aiohttp
+requests
+pytest-asyncio
+pytest
+black
